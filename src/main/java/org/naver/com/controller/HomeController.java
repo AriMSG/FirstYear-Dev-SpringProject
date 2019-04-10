@@ -39,6 +39,8 @@ public class HomeController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("home");
 		
+		System.out.println("git test");
+		
 		
 		
 /*        BufferedReader br = null;
