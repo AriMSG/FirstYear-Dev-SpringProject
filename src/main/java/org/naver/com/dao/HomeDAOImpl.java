@@ -14,8 +14,9 @@ public class HomeDAOImpl implements HomeDAO {
 
 	@Override
 	public int getaaa() {
-		
+
 		System.out.println("aaa");
+		System.out.println("bbb");
 		// int getCnt = SqlSession.selectOne("org.naver.com.HomeDAO.selectData");
 		return 0;
 		
