@@ -38,6 +38,7 @@ public class HomeController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("home");
+		System.out.println("깃을 활용해보자 ");
 		
 		System.out.println("git test");
 		
