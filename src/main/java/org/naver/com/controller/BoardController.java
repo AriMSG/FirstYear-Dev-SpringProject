@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import util.SG_Datelib;
+
 
 /**
  * Handles requests for the application home page.
@@ -32,6 +34,7 @@ public class BoardController {
 		mav.setViewName("board");
 		
 		
+		SG_Datelib.TestCode();
 
 		
 

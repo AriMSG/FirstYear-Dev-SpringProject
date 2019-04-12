@@ -41,7 +41,6 @@ public class SG_TestData {
 		// TODO Auto-generated constructor stub
 		System.out.println("==테스트용 클래스 시작==");
 	}
-	
 	public static void MapValueTest(Map map){
 		try {
 			for ( Object key : map.keySet() ) {
@@ -86,9 +85,4 @@ public class SG_TestData {
 			// TODO: handle exception
 		}
 	}
-
-/*			
-			
-*/
-
 }
