@@ -1,17 +1,19 @@
+
 package util;
 
+import java.util.Date;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
 
 /**
  * @version 1.0
- * @author MSG Lupin
- * Date관련 각종 기능성 Method를 제공하는 Util Class
+ * 클래스 설명<br>
+ * Date관련 각종 기능성 Method를 제공하는 Util Class<br>
  */
-public class SG_Datelib {
-	
+public class CDateUtil
+{
     public static final long MILLISECONDS_IN_HOUR = 60L * 60L * 1000L;
     
     private static final MessageFormat sDashForm = new MessageFormat("{0}-{1}-{2}");
@@ -24,33 +26,17 @@ public class SG_Datelib {
     private static final SimpleDateFormat dSlashForm = new SimpleDateFormat("yyyy/MM/dd");
     private static final SimpleDateFormat dBlankForm = new SimpleDateFormat("yyyyMMdd");
     private static final SimpleDateFormat dSecondForm = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-
-    private static Scanner scan = new Scanner(System.in);
-    
-
-	Calendar cal = Calendar.getInstance();
-	Date d = new Date(cal.getTimeInMillis());
-	
-	
-	
-	
+        
     public static Calendar getCurrentCalendar()
     {
         return Calendar.getInstance();
     }
-	
-    /**
-     * @category
-     */
-    public static void SG_Datelib_Menual() {
-    	System.out.println("----- 사용법 호출 -----");
-    }
-	
-	
+
+    
     
     /**
      * 현재 일자을 YYYYMMDD 형식으로 반환한다.
-     * @return 현재일자(YYYYMMDD)
+     * @return 현재일자(YYYMMDD)
      */
     public static String getCurrentDate()
     {
@@ -60,40 +46,15 @@ public class SG_Datelib {
         String currentMonth = String.valueOf((cal.get(Calendar.MONTH) + 1));
         String currentDay = String.valueOf(cal.get(Calendar.DATE));
 
-        if (Integer.parseInt(currentMonth) < 10) 
-        	currentMonth = "0" + currentMonth;
-        if (Integer.parseInt(currentDay) < 10) 
-        	currentDay = "0" + currentDay;
+        if (Integer.parseInt(currentMonth) < 10) currentMonth = "0"
+                + currentMonth;
+
+        if (Integer.parseInt(currentDay) < 10) currentDay = "0" + currentDay;
 
         String vCurrentDate = currentYear + currentMonth + currentDay;
 
         return vCurrentDate;
     }
-    
-    /**
-     * 현재 일자을 YYYY(Key)MM(Key)DD 형식으로 반환한다.
-     * @param Key -,/,. 등의 특수기호
-     * @return 현재일자(YYYY(Key)MM(Key)DD)
-     */
-    public static String getCurrentDate(String Key)
-    {
-        Calendar cal = getCurrentCalendar();
-
-        String currentYear = String.valueOf(cal.get(Calendar.YEAR));
-        String currentMonth = String.valueOf((cal.get(Calendar.MONTH) + 1));
-        String currentDay = String.valueOf(cal.get(Calendar.DATE));
-
-        if (Integer.parseInt(currentMonth) < 10) 
-        	currentMonth = "0" + currentMonth;
-
-        if (Integer.parseInt(currentDay) < 10) 
-        	currentDay = "0" + currentDay;
-
-        String vCurrentDate = currentYear + Key + currentMonth + Key + currentDay;
-
-        return vCurrentDate;
-    }
-    
     
     /**
      * 현재 일자에 일정 Day를 합한 일자를 YYYYMMDD 형식으로 반환한다.
@@ -108,6 +69,7 @@ public class SG_Datelib {
         Date tmpDate = new Date(cal.getTimeInMillis());
         return date2Str(tmpDate, ' ');
     }
+    
     /**
      * 현재 일자에 일정 Day를 뺀 일자를 YYYYMMDD 형식으로 반환한다.
      * @param day 뺄 일자
@@ -117,11 +79,11 @@ public class SG_Datelib {
     {
         return addDay(-1 * day);
     }
+    
     /**
      * 기준 일자에 일정 Day를 합한 일자를 YYYYMMDD 형식으로 반환한다.
      * @param targetDate 기준일자
      * @param day 추가할 일자
-     * @param xxx 사랑해
      * @return 기준일자에 day가 추가된 일자(YYYYMMDD)
      */
     public static String addDay(String targetDate, int day)
@@ -130,7 +92,7 @@ public class SG_Datelib {
         cal.add(Calendar.DATE, day);
 
         Date tmpDate = new Date(cal.getTimeInMillis());
-        
+
         if(targetDate.indexOf('-') != -1)
             return date2Str(tmpDate, '-');
         else if(targetDate.indexOf('.') != -1)
@@ -140,6 +102,7 @@ public class SG_Datelib {
         else
             return date2Str(tmpDate, ' ');
     }
+
     /**
      * 기준 일자에 일정 Day를 뺀 일자를 YYYYMMDD 형식으로 반환한다.
      * @param targetDate 기준일자
@@ -163,223 +126,6 @@ public class SG_Datelib {
             return date2Str(tmpDate, ' ');
     }
     
- 
-	
-	
-	
-	
-	
-    /**
-     * java.sqlDate를 날짜 String으로 변환하는 기능 제공
-     * maskType으로 '-', '.', '/', ''의 Format을 지원 (':'일시에는 시:분:초 포함) 
-     * @param cToDate 날짜 String으로 변경코저하는 Date Object
-     * @param maskType 변경코저 하는 maskType
-     * @return 날짜 String
-     */
-    public static String date2Str(Date cToDate, char maskType)
-    {
-    	String returnString = "";
-    	
-    	if (cToDate != null)
-    	{
-    		switch(maskType)
-    		{
-    			case '-' :
-    				returnString = dDashForm.format(cToDate);
-    				break;
-    				
-    			case '.' :
-    				returnString = dCommaForm.format(cToDate);
-    				break;
-    
-    			case '/' :
-    				returnString = dSlashForm.format(cToDate);
-    				break;
-    				
-    			case ':' :
-    			    returnString = dSecondForm.format(cToDate);
-    			    break;
-    				
-    			default :
-    				returnString = dBlankForm.format(cToDate);
-    				break;
-    		}
-    	}
-    	return returnString;
-    }
-	
-    /**
-     * Date를 Calendar로 변환한다.
-     * Date(yyyy-mm-dd) -> Calendar
-     * @param cToDate Date
-     * @return 변환된 Calendar
-     */
-    public static final Calendar date2Calendar(Date cToDate)
-    {
-    	if (cToDate != null)
-    	{
-    		java.util.Calendar dateToCal = java.util.Calendar.getInstance();
-    		dateToCal.setTime(cToDate);
-    		dateToCal.add(java.util.Calendar.DATE, 0);
-    		return dateToCal;
-    	}
-    	return null;
-    }
-	
-    /**
-     * Date를 TimeStamp로 변환한다.
-     * Date(yyyy-mm-dd) -> TimeStamp
-     * @param cToDate Date
-     * @return Timestamp
-     */
-    public static final Timestamp date2Timestamp(Date cToDate)
-    {
-    	if (cToDate != null)
-    	{
-    		Timestamp tsDate = new Timestamp(cToDate.getTime());
-    		return tsDate;
-    	}
-    	return null;
-    }
-    
-    /**
-     * 시작일자와 종료일자 사이의 일수를 구한다.<BR>
-     * 일자 형식은 "YYYYMMDD"로 한다.<BR>
-     * 예를 들어 20020501 ~ 20020510 = 9 <BR>
-     * @param   sFromDate    : 시작일 YYYYMMDD<BR>
-     * @param   sToDate      : 종료일 YYYYMMDD<BR>
-     * @return  long         : 일수간격<BR>
-     */
-    public static long daysBetween(String sFromDate, String sToDate)
-    {
-        Date fDate = str2Date(sFromDate);
-        Date tDate = str2Date(sToDate);
-        
-        return daysBetween(fDate, tDate);
-    }
-    
-    
-    /**
-     * 시작일자와 종료일자 사이의 일수를 구한다.
-     * @param d1 시작일자
-     * @param d2 종료일자
-     * @return 시작일자와 종료일자 사이 일수
-     */
-    public static long daysBetween(Date d1, Date d2)
-    {
-        return ((d2.getTime() - d1.getTime() + MILLISECONDS_IN_HOUR) / (MILLISECONDS_IN_HOUR * 24));
-    }   
-    
-    /**
-     * 두개의 날짜를 String으로 입력받아 비교하는 메소드
-     * stdDate > compDate : true, stdDate <= compDate : false;
-     * @param stdDate 기준Date
-     * @param compDate 비교Date
-     * @return boolean (stdDate > compDate : true, stdDate <= compDate : false)
-     */
-    public static boolean compareDate(String stdDate, String compDate)
-    {
-       Calendar cd1 = str2Calendar(stdDate);
-       Calendar cd2 = str2Calendar(compDate);
-       
-       if (cd1.after(cd2))
-          return true;
-       
-       return false;
-    } 
-    
-    /**
-     * Timestampe를 String으로 변환한다.
-     * @param tmValue
-     * @return "yyyy-MM-dd HH:mm:ss"
-     */
-    public static String timestamp2Str(Timestamp tmValue)
-    {
-    	SimpleDateFormat timeKeyFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	return timeKeyFormat.format( tmValue);
-    }
-
-    /**
-     * 회사 설립일 부터 현재년 +5년 까지의 select박스를 만드는 함수 
-     */
-    public static String getSelectYear(String name) {
-    	int year = Calendar.getInstance().get(Calendar.YEAR);
-    	
-    	String select = "<select name='"+name+"' id='"+name+"'>";
-    	for(int i = 1990; i < year+5; i++)
-    	{
-    		if(year != i)
-    			select += "<option value='"+i+"'>"+i+"년"+"</option>";
-    		else
-    			select += "<option value='"+i+"' selected='selected'>"+i+"년"+"</option>";
-    	}
-    	select += "</select>";	
-    	
-    	return  select;
-    }
-    
-    /**
-     * 회사 설립일 부터 현재년 +5년 까지의 select박스를 만드는 함수 (onchange 추가)
-     */
-    public static String getSelectYearOnchange(String name) {
-    	int year = Calendar.getInstance().get(Calendar.YEAR);
-    	
-    	String select = "<select name='"+name+"' id='"+name+"' onchange=changeSelectBox();>";
-    	for(int i = 1990; i < year+5; i++)
-    	{
-    		if(year != i)
-    			select += "<option value='"+i+"'>"+i+"년"+"</option>";
-    		else
-    			select += "<option value='"+i+"' selected='selected'>"+i+"년"+"</option>";
-    	}
-    	select += "</select>";	
-    	
-    	return  select;
-    }
-
-
-	
-	
-
-	
-    /**
-     * 날짜 String을 Calendar 형식으로 변환하는 기능을 제공
-     * @param cToStr Date형으로 변환할 날짜 String
-     * @return 변환된 Calendar
-     */
-    public static Calendar str2Calendar(String cToStr)
-    {
-        Date tmpDate = str2Date(cToStr);
-        
-        if( !CDateUtil.isNull(tmpDate) )
-        {
-            Calendar tmpCalendar = Calendar.getInstance();
-            tmpCalendar.setTime(tmpDate);
-            
-            return tmpCalendar;
-        }
-        
-        return null;
-    }
-    
-	public static boolean isNull(Object tmpObject)
-	{
-		if(tmpObject == null)
-			return true;
-
-        return false;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
     /**
      * 날짜 Format을 변경기능을 제공
      * maskType으로 '-', '.', '/', ''의 Format을 지원
@@ -387,6 +133,7 @@ public class SG_Datelib {
      * @param maskType 변경코저 하는 maskType 
      * @return 변환된 String
      */
+    
     /* 
 		작성일		:	2019-04-18
 		작성자		:	민순기 
@@ -486,54 +233,206 @@ public class SG_Datelib {
 
 
     /* 190418 S E */
-	
-	
     
     
+    /**
+     * 날짜 String을 Calendar 형식으로 변환하는 기능을 제공
+     * @param cToStr Date형으로 변환할 날짜 String
+     * @return 변환된 Calendar
+     */
+    public static Calendar str2Calendar(String cToStr)
+    {
+        Date tmpDate = str2Date(cToStr);
+        
+        if( !CDateUtil.isNull(tmpDate) )
+        {
+            Calendar tmpCalendar = Calendar.getInstance();
+            tmpCalendar.setTime(tmpDate);
+            
+            return tmpCalendar;
+        }
+        
+        return null;
+    }
     
+	public static boolean isNull(Object tmpObject)
+	{
+		if(tmpObject == null)
+			return true;
 
-	
-	
-	
-	public static void DateSet() {
-		
+        return false;
 	}
 
-	public static Date DateTypeChange(Calendar cal) {
-		// Calendar => Date
-		Date date = new Date(cal.getTimeInMillis());
-		return date;
-	}
-	public static Calendar DateTypeChange(Date date) {
-		// Date => Calendar
-		Calendar result = Calendar.getInstance();
-		result.setTime(date);
-		return result;
-	}
-	public static void TestCode() {
-		Calendar cal1 = Calendar.getInstance();
-		System.out.println("이해의 년도 		: 	" + cal1.get(Calendar.YEAR));
-		System.out.println("월 (0~11, 0:1월) 	:	" + cal1.get(Calendar.MONTH));
-		System.out.println("이 해의 몇 째 주 		:	" + cal1.get(Calendar.WEEK_OF_YEAR));
-		System.out.println("이 달의 몇 째 주 		:	" + cal1.get(Calendar.WEEK_OF_MONTH));
-		System.out.println("이 달의 몇 일 		:	" + cal1.get(Calendar.DATE));
-		System.out.println("이 달의 몇 일 		:	" + cal1.get(Calendar.DAY_OF_MONTH));
-		System.out.println("이 해의 몇 일 		:	" + cal1.get(Calendar.DAY_OF_YEAR));
-		System.out.println("요일(1~7, 1:일요일)	:	" + cal1.get(Calendar.DAY_OF_WEEK));
-		System.out.println("이 달의 몇 째 요일		:	" + cal1.get(Calendar.DAY_OF_WEEK_IN_MONTH));
-		System.out.println("0:오전 1:오후		:	" + cal1.get(Calendar.AM_PM));
-		System.out.println("시간(0~11)		:	" + cal1.get(Calendar.HOUR));
-		System.out.println("시간(0~23)		:	" + cal1.get(Calendar.HOUR_OF_DAY));
-		System.out.println("분(0~59)			:	" + cal1.get(Calendar.MINUTE));
-		System.out.println("초(0~59)			:	" + cal1.get(Calendar.SECOND));
-		System.out.println("1000분의 1초(0~999)	:	" + cal1.get(Calendar.MILLISECOND));
-		System.out.println("TimeZone(-12~+12)	:	" + (cal1.get(Calendar.ZONE_OFFSET)/(60*60*1000)));
-		System.out.println("이 달의 마지막 날		:	" + cal1.getActualMaximum(Calendar.DATE));
-		
-		Calendar cal2 = Calendar.getInstance();  // getInstance() 오늘의 날짜를 가져옴.
-		cal1.set(2019, 7,15);
-	}
-	
-	
-	
+    /**
+     * java.sqlDate를 날짜 String으로 변환하는 기능 제공
+     * maskType으로 '-', '.', '/', ''의 Format을 지원 (':'일시에는 시:분:초 포함) 
+     * @param cToDate 날짜 String으로 변경코저하는 Date Object
+     * @param maskType 변경코저 하는 maskType
+     * @return 날짜 String
+     */
+    public static String date2Str(Date cToDate, char maskType)
+    {
+    	String returnString = "";
+    	
+    	if (cToDate != null)
+    	{
+    		switch(maskType)
+    		{
+    			case '-' :
+    				returnString = dDashForm.format(cToDate);
+    				break;
+    				
+    			case '.' :
+    				returnString = dCommaForm.format(cToDate);
+    				break;
+    
+    			case '/' :
+    				returnString = dSlashForm.format(cToDate);
+    				break;
+    				
+    			case ':' :
+    			    returnString = dSecondForm.format(cToDate);
+    			    break;
+    				
+    			default :
+    				returnString = dBlankForm.format(cToDate);
+    				break;
+    		}
+    	}
+    
+    	return returnString;
+    }
+
+
+    /**
+     * Date를 Calendar로 변환한다.
+     * Date(yyyy-mm-dd) -> Calendar
+     * @param cToDate Date
+     * @return 변환된 Calendar
+     */
+    public static final Calendar date2Calendar(Date cToDate)
+    {
+    	if (cToDate != null)
+    	{
+    		java.util.Calendar dateToCal = java.util.Calendar.getInstance();
+    		dateToCal.setTime(cToDate);
+    		dateToCal.add(java.util.Calendar.DATE, 0);
+    		return dateToCal;
+    	}
+    	return null;
+    }
+
+
+    /**
+     * Date를 TimeStamp로 변환한다.
+     * Date(yyyy-mm-dd) -> TimeStamp
+     * @param cToDate Date
+     * @return Timestamp
+     */
+    public static final Timestamp date2Timestamp(Date cToDate)
+    {
+    	if (cToDate != null)
+    	{
+    		Timestamp tsDate = new Timestamp(cToDate.getTime());
+    		return tsDate;
+    	}
+    	return null;
+    }
+
+
+    /**
+     * 시작일자와 종료일자 사이의 일수를 구한다.<BR>
+     * 일자 형식은 "YYYYMMDD"로 한다.<BR>
+     * 예를 들어 20020501 ~ 20020510 = 9 <BR>
+     * @param   sFromDate    : 시작일 YYYYMMDD<BR>
+     * @param   sToDate      : 종료일 YYYYMMDD<BR>
+     * @return  long         : 일수간격<BR>
+     */
+    public static long daysBetween(String sFromDate, String sToDate)
+    {
+        Date fDate = str2Date(sFromDate);
+        Date tDate = str2Date(sToDate);
+        
+        return daysBetween(fDate, tDate);
+    }
+    
+    /**
+     * 시작일자와 종료일자 사이의 일수를 구한다.
+     * @param d1 시작일자
+     * @param d2 종료일자
+     * @return 시작일자와 종료일자 사이 일수
+     */
+    public static long daysBetween(Date d1, Date d2)
+    {
+        return ((d2.getTime() - d1.getTime() + MILLISECONDS_IN_HOUR) / (MILLISECONDS_IN_HOUR * 24));
+    }   
+    
+    
+    /**
+     * 두개의 날짜를 String으로 입력받아 비교하는 메소드
+     * stdDate > compDate : true, stdDate <= compDate : false;
+     * @param stdDate 기준Date
+     * @param compDate 비교Date
+     * @return boolean (stdDate > compDate : true, stdDate <= compDate : false)
+     */
+    public static boolean compareDate(String stdDate, String compDate)
+    {
+       Calendar cd1 = str2Calendar(stdDate);
+       Calendar cd2 = str2Calendar(compDate);
+       
+       if (cd1.after(cd2))
+          return true;
+       
+       return false;
+    } 
+    
+    /**
+     * Timestampe를 String으로 변환한다.
+     * @param tmValue
+     * @return "yyyy-MM-dd HH:mm:ss"
+     */
+    public static String timestamp2Str(Timestamp tmValue)
+    {
+    	SimpleDateFormat timeKeyFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	return timeKeyFormat.format( tmValue);
+    }
+
+    /**
+     * 회사 설립일 부터 현재년 +5년 까지의 select박스를 만드는 함수 
+     */
+    public static String getSelectYear(String name) {
+    	int year = Calendar.getInstance().get(Calendar.YEAR);
+    	
+    	String select = "<select name='"+name+"' id='"+name+"'>";
+    	for(int i = 1990; i < year+5; i++)
+    	{
+    		if(year != i)
+    			select += "<option value='"+i+"'>"+i+"년"+"</option>";
+    		else
+    			select += "<option value='"+i+"' selected='selected'>"+i+"년"+"</option>";
+    	}
+    	select += "</select>";	
+    	
+    	return  select;
+    }
+    
+    /**
+     * 회사 설립일 부터 현재년 +5년 까지의 select박스를 만드는 함수 (onchange 추가)
+     */
+    public static String getSelectYearOnchange(String name) {
+    	int year = Calendar.getInstance().get(Calendar.YEAR);
+    	
+    	String select = "<select name='"+name+"' id='"+name+"' onchange=changeSelectBox();>";
+    	for(int i = 1990; i < year+5; i++)
+    	{
+    		if(year != i)
+    			select += "<option value='"+i+"'>"+i+"년"+"</option>";
+    		else
+    			select += "<option value='"+i+"' selected='selected'>"+i+"년"+"</option>";
+    	}
+    	select += "</select>";	
+    	
+    	return  select;
+    }
+
 }
